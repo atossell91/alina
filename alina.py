@@ -1,3 +1,7 @@
+#! usr/bin/python/python3
+
+import os
+import sys
 import argparse
 
 def main():
@@ -21,8 +25,22 @@ def create_file(template_path, **kwargs):
 
     print(text)
 
-def get_current_folder():
-    pass
+def get_top_level_dir():
+    path = os.getcwd()
+    max_hops = 100
+    hops = 0
+
+    while hops < max_hops:
+        contents = os.listdir(path)
+        if 'src' in contents and 'include' in contents:
+            return path
+        parent = os.path.dirname(path)
+        if parent == path:
+            break  # Reached root
+        path = parent
+        hops += 1
+
+    return None
 
 if __name__ == '__main__':
     main()
